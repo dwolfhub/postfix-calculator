@@ -1,0 +1,88 @@
+#!/usr/bin/python
+from math import pow, factorial
+
+
+def addition(x, y):
+    return x + y
+
+
+def subtraction(x, y):
+    return x - y
+
+
+def multiplication(x, y):
+    return x * y
+
+
+def division(x, y):
+    return x / y
+
+
+def int_division(x, y):
+    return x // y
+
+
+def modulus(x, y):
+    return x % y
+
+
+def main():
+    exp = input('Enter an expression: ')
+    exp = exp.split()
+
+    operations = {
+        '+': {
+            'unary': False,
+            'function':  addition,
+        },
+        '-': {
+            'unary': False,
+            'function': subtraction
+        },
+        '*': {
+            'unary': False,
+            'function': multiplication
+        },
+        '/': {
+            'unary': False,
+            'function': division
+        },
+        '//': {
+            'unary': False,
+            'function': int_division
+        },
+        '%': {
+            'unary': False,
+            'function': modulus
+        },
+        '^': {
+            'unary': False,
+            'function': pow
+        },
+        '!': {
+            'unary': True,
+            'function': factorial
+        },
+    }
+    stack = []
+
+    for elm in exp:
+        operation = operations.get(elm, False)
+        if operation:
+            y = stack.pop()
+            if operation['unary']:
+                stack.append(operation['function'](y))
+            else:
+                x = stack.pop()
+                stack.append(operation['function'](x, y))
+        else:
+            stack.append(float(elm))
+
+    if len(stack) != 1:
+        print('Error: Invalid postfix expression!')
+
+    print(stack[0])
+
+
+if __name__ == '__main__':
+    main()
